@@ -7,6 +7,7 @@ module.exports = class {
       baseUrl: config.baseUrl,
       token: config.token,
       email: config.email,
+      apiVersion: config.apiVersion,
     })
 
     this.config = config

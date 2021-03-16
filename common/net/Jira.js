@@ -5,10 +5,11 @@ const { format } = require('url')
 const client = require('./client')(serviceName)
 
 class Jira {
-  constructor ({ baseUrl, token, email }) {
+  constructor ({ baseUrl, token, email, apiVersion }) {
     this.baseUrl = baseUrl
     this.token = token
     this.email = email
+    this.apiVersion = apiVersion
   }
 
   async getIssue (issueId, query = {}) {
@@ -16,7 +17,7 @@ class Jira {
 
     try {
       return this.fetch('getIssue', {
-        pathname: `/rest/api/2/issue/${issueId}`,
+        pathname: `/rest/api/${this.apiVersion}/issue/${issueId}`,
         query: {
           fields: fields.join(','),
           expand: expand.join(','),
@@ -33,7 +34,7 @@ class Jira {
 
   async getIssueTransitions (issueId) {
     return this.fetch('getIssueTransitions', {
-      pathname: `/rest/api/2/issue/${issueId}/transitions`,
+      pathname: `/rest/api/${this.apiVersion}/issue/${issueId}/transitions`,
     }, {
       method: 'GET',
     })
@@ -41,7 +42,7 @@ class Jira {
 
   async transitionIssue (issueId, data) {
     return this.fetch('transitionIssue', {
-      pathname: `/rest/api/3/issue/${issueId}/transitions`,
+      pathname: `/rest/api/${this.apiVersion}/issue/${issueId}/transitions`,
     }, {
       method: 'POST',
       body: data,
